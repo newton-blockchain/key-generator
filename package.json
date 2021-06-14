@@ -1,0 +1,26 @@
+{
+  "name": "key-generator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/newton-blockchain/key-generator.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/newton-blockchain/key-generator/issues"
+  },
+  "homepage": "https://github.com/newton-blockchain/key-generator#readme",
+  "dependencies": {
+    "web3": "^1.2.8",
+    "tonweb": "^0.0.14"
+  }
+}
