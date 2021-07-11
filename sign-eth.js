@@ -5,7 +5,7 @@ const fs = require("fs");
 const textToSign = process.argv[2];
 
 if (!textToSign) {
-    console.error('Usage `node sign-eth.js TEXT_TO_SIGN`');
+    console.error('Usage `node sign-eth.js HEX_TO_SIGN`');
     return;
 }
 
@@ -21,7 +21,7 @@ async function init() {
 
         const ethAccount = web3.eth.accounts.privateKeyToAccount(json.ethPrivateKey);
 
-        console.log(`Signing "${textToSign} by ` + ethAccount.address);
+        console.log(`Signing "${textToSign}" by ` + ethAccount.address);
 
         const signature = ethAccount.sign(textToSign).signature;
         console.log(signature);
