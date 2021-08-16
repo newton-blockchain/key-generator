@@ -41,6 +41,7 @@ async function init() {
     });
 
     console.log('TON Public Key = ' + TonWeb.utils.bytesToHex(keyPair.publicKey));
+    console.log('TON Public Key Base64 = ' + TonWeb.utils.bytesToBase64(keyPair.publicKey));
 
     const myAddress = (await wallet.getAddress()).toString(false);
     console.log('TON Address = ' + myAddress);
