@@ -1,6 +1,7 @@
 const Web3 = require("web3");
 const TonWeb = require("tonweb");
 const fs = require("fs");
+const {concatBytes} = require("tonweb/src/utils");
 
 async function init() {
     const nacl = TonWeb.utils.nacl;
@@ -41,7 +42,7 @@ async function init() {
     });
 
     console.log('TON Public Key = ' + TonWeb.utils.bytesToHex(keyPair.publicKey));
-    console.log('TON Public Key Base64 = ' + TonWeb.utils.bytesToBase64(keyPair.publicKey));
+    console.log('TON Public Key Base64 = ' + TonWeb.utils.bytesToBase64(concatBytes(new Uint8Array([0x3E, 0xE6]), keyPair.publicKey)));
 
     const myAddress = (await wallet.getAddress()).toString(false);
     console.log('TON Address = ' + myAddress);
