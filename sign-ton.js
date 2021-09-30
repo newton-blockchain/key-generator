@@ -31,11 +31,11 @@ async function init() {
         const keyPair = nacl.sign.keyPair.fromSeed(TonWeb.utils.hexToBytes(tonSecretKey));
 
         const tonMultisigAddress = 'Ef8hdYGHEgiMCl8IffJZSkHLXLKWietg_Fn2hI11KvEUmBt9';
-        const destAddress = 'UQDKjf-94llqNl892Pru4V9r5FbOVs73vKNzNPaP1hQyGIij';
+        const destAddress = 'kf8_gV8rpqtPl1vmYDrMzwxlGQDJ63SIKO8vDhNZHT5wwVhd';
         const WALLET_ID = 0;
-        const queryId = new BN(1634023315).mul(new BN(4294967296)).add(new BN(5));
+        const queryId = new BN(1634023315).mul(new BN(4294967296)).add(new BN(6));
 
-        const orderHeader = TonWeb.Contract.createInternalMessageHeader(new TonWeb.utils.Address(destAddress), new TonWeb.utils.toNano(999999));
+        const orderHeader = TonWeb.Contract.createInternalMessageHeader(new TonWeb.utils.Address(destAddress), new TonWeb.utils.toNano(899999));
         const msgToBridge = TonWeb.Contract.createCommonMsgInfo(orderHeader, null, null);
 
         const cell = new TonWeb.boc.Cell();
