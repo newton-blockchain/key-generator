@@ -33,9 +33,9 @@ async function init() {
         const tonMultisigAddress = 'Ef8hdYGHEgiMCl8IffJZSkHLXLKWietg_Fn2hI11KvEUmBt9';
         const destAddress = 'UQDKjf-94llqNl892Pru4V9r5FbOVs73vKNzNPaP1hQyGIij';
         const WALLET_ID = 0;
-        const queryId = new BN(1634023315).mul(new BN(4294967296)).add(new BN(5).mul(new BN(1e9)));
+        const queryId = new BN(1634023315).mul(new BN(4294967296)).add(new BN(5));
 
-        const orderHeader = TonWeb.Contract.createInternalMessageHeader(new TonWeb.utils.Address(destAddress), new TonWeb.utils.toNano(0.5));
+        const orderHeader = TonWeb.Contract.createInternalMessageHeader(new TonWeb.utils.Address(destAddress), new TonWeb.utils.toNano(999999));
         const msgToBridge = TonWeb.Contract.createCommonMsgInfo(orderHeader, null, null);
 
         const cell = new TonWeb.boc.Cell();
@@ -58,6 +58,9 @@ async function init() {
         const boc = TonWeb.utils.bytesToBase64(await resultMessage.toBoc(false));
 
         console.log(boc);
+
+        const tonweb = new TonWeb();
+        console.log(await tonweb.provider.sendBoc(boc));
 
     } else {
         console.error('No file ' + FILE_NAME);
