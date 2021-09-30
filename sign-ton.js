@@ -30,10 +30,10 @@ async function init() {
         ethAccount = web3.eth.accounts.privateKeyToAccount(json.ethPrivateKey);
         const keyPair = nacl.sign.keyPair.fromSeed(TonWeb.utils.hexToBytes(tonSecretKey));
 
-        const tonMultisigAddress = '0f9pUVkE0AjZSVmExQdELgd3Z6pHSE5_6X48NnOBcSbOeK7Z';
-        const destAddress = 'EQCmDZwk4sS3Nl2VumtvsDMs5AZ2AqH8yqJzf9y10sxaolWg';
-        const WALLET_ID = 1;
-        const queryId = new BN(1629209348).mul(new BN(4294967296)).add(new BN(1));
+        const tonMultisigAddress = 'Ef8hdYGHEgiMCl8IffJZSkHLXLKWietg_Fn2hI11KvEUmBt9';
+        const destAddress = 'UQDKjf-94llqNl892Pru4V9r5FbOVs73vKNzNPaP1hQyGIij';
+        const WALLET_ID = 0;
+        const queryId = new BN(1634023315).mul(new BN(4294967296)).add(new BN(5).mul(new BN(1e9)));
 
         const orderHeader = TonWeb.Contract.createInternalMessageHeader(new TonWeb.utils.Address(destAddress), new TonWeb.utils.toNano(0.5));
         const msgToBridge = TonWeb.Contract.createCommonMsgInfo(orderHeader, null, null);
