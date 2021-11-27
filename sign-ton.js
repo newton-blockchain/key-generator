@@ -30,9 +30,9 @@ async function init() {
         ethAccount = web3.eth.accounts.privateKeyToAccount(json.ethPrivateKey);
         const keyPair = nacl.sign.keyPair.fromSeed(TonWeb.utils.hexToBytes(tonSecretKey));
 
-        const tonMultisigAddress = 'kf8_gV8rpqtPl1vmYDrMzwxlGQDJ63SIKO8vDhNZHT5wwVhd'; // bsc multisig address
-        const destAddress = 'Ef9NXAIQs12t2qIZ-sRZ26D977H65Ol6DQeXc5_gUNaUys5r'; // bsc bridge address
-        const WALLET_ID = 2;
+        const tonMultisigAddress = 'kf8rV4RD7BD-j_C-Xsu8FBO9BOOOwISjNPbBC8tcq688Gcmk'; // eth multisig address
+        const destAddress = 'Ef_dJMSh8riPi3BTUTtcxsWjG8RLKnLctNjAM4rw8NN-xWdr'; // eth bridge address
+        const WALLET_ID = 1;
         const queryId = new BN(1640606774).mul(new BN(4294967296)).add(new BN(7)); // 27 dec 2021
 
         const bridgePayload = new TonWeb.boc.Cell();
