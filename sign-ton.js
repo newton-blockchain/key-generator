@@ -30,17 +30,17 @@ async function init() {
         ethAccount = web3.eth.accounts.privateKeyToAccount(json.ethPrivateKey);
         const keyPair = nacl.sign.keyPair.fromSeed(TonWeb.utils.hexToBytes(tonSecretKey));
 
-        const tonMultisigAddress = 'kf8rV4RD7BD-j_C-Xsu8FBO9BOOOwISjNPbBC8tcq688Gcmk'; // old eth multisig address
-        const destAddress = 'EQDCwPXiWh8LYCl47MbdG6nTveEMptBMy-hboRzwlFVZjYls'; //
-        const WALLET_ID = 1;
-        const queryId = new BN(1640606774).mul(new BN(4294967296)).add(new BN(11)); // 27 dec 2021
+        const tonMultisigAddress = 'Ef_8C2w4oNoiU2zpyxQDSJhZOphjV9QdjfDm2S-AShIfDCHK'; // test eth multisig address
+        const destAddress = 'EQA0i8-CdGnF_DhUHHf92R1ONH6sIA9vLZ_WLcCIhfBBXwtG'; //
+        const WALLET_ID = 101;
+        const queryId = new BN(1680123600).mul(new BN(4294967296)).add(new BN(11)); // 30 mar 2023
 
-        const bridgePayload = new TonWeb.boc.Cell();
-        bridgePayload.bits = new TonWeb.boc.BitString(32 + 8);
-        bridgePayload.bits.writeUint(4, 32); // op execute_voting
-        bridgePayload.bits.writeUint(5, 8); // op get_reward
+        // const bridgePayload = new TonWeb.boc.Cell();
+        // bridgePayload.bits = new TonWeb.boc.BitString(32 + 8);
+        // bridgePayload.bits.writeUint(4, 32); // op execute_voting
+        // bridgePayload.bits.writeUint(5, 8); // op get_reward
 
-        const orderHeader = TonWeb.Contract.createInternalMessageHeader(new TonWeb.utils.Address(destAddress), new TonWeb.utils.toNano(949705));
+        const orderHeader = TonWeb.Contract.createInternalMessageHeader(new TonWeb.utils.Address(destAddress), new TonWeb.utils.toNano('0.123'));
         const msgToBridge = TonWeb.Contract.createCommonMsgInfo(orderHeader, null, null);
 
         const cell = new TonWeb.boc.Cell();
