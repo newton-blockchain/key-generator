@@ -29,44 +29,67 @@ async function init() {
         tonSecretKey = json.tonPrivateKey;
         ethAccount = web3.eth.accounts.privateKeyToAccount(json.ethPrivateKey);
         const keyPair = nacl.sign.keyPair.fromSeed(TonWeb.utils.hexToBytes(tonSecretKey));
+        const secretKey = keyPair.secretKey;
 
-        const tonMultisigAddress = 'Ef_8C2w4oNoiU2zpyxQDSJhZOphjV9QdjfDm2S-AShIfDCHK'; // test eth multisig address
-        const destAddress = 'EQA0i8-CdGnF_DhUHHf92R1ONH6sIA9vLZ_WLcCIhfBBXwtG'; //
-        const WALLET_ID = 101;
-        const queryId = new BN(1680123600).mul(new BN(4294967296)).add(new BN(11)); // 30 mar 2023
+        const tonweb = new TonWeb(new TonWeb.HttpProvider());
+        const walletClass = tonweb.wallet.all['v3R2'];
+        const wallet = new walletClass(tonweb.provider, {
+            publicKey: keyPair.publicKey,
+            wc: -1
+        });
 
-        // const bridgePayload = new TonWeb.boc.Cell();
-        // bridgePayload.bits = new TonWeb.boc.BitString(32 + 8);
-        // bridgePayload.bits.writeUint(4, 32); // op execute_voting
-        // bridgePayload.bits.writeUint(5, 8); // op get_reward
+        function wait(ms) {
+            return new Promise(resolve => {
+                setTimeout(() => resolve(), ms);
+            });
+        }
 
-        const orderHeader = TonWeb.Contract.createInternalMessageHeader(new TonWeb.utils.Address(destAddress), new TonWeb.utils.toNano('0.123'));
-        const msgToBridge = TonWeb.Contract.createCommonMsgInfo(orderHeader, null, null);
+        const sendInternal = async (byteArray /* Uint8Array | TonWeb.boc.Cell */, toAddress) => {
+            let seqno = await wallet.methods.seqno().call();
+            if (!seqno) {
+                seqno = 0;
+            }
+            console.log({seqno});
+            await wait(3000);
+            const query = await wallet.methods.transfer({
+                secretKey: secretKey,
+                toAddress: toAddress,
+                amount: TonWeb.utils.toNano('0.3'),
+                seqno: seqno,
+                payload: byteArray,
+                sendMode: 3
+            });
 
-        const cell = new TonWeb.boc.Cell();
-        cell.bits.writeUint(tonMultisigIndex, 8);
-        cell.bits.writeBit(0); // null signatures dict
-        cell.bits.writeUint(WALLET_ID, 32);
-        cell.bits.writeUint(queryId, 64);
-        cell.bits.writeUint(3, 8); // send mode 3
-        cell.refs.push(msgToBridge);
+            console.log(await query.send());
+        }
 
-        const rootHash = await cell.hash();
-        const rootSignature = TonWeb.utils.nacl.sign.detached(rootHash, keyPair.secretKey);
+        const sendToMultisig = async () => {
+            const tonMultisigAddress = 'Ef_8C2w4oNoiU2zpyxQDSJhZOphjV9QdjfDm2S-AShIfDCHK';
+            const WALLET_ID = 101;
+            const queryId = new BN(1680123600).mul(new BN(4294967296)).add(new BN(11)); // 30 mar 2023
+            const destAddress = 'EQA0i8-CdGnF_DhUHHf92R1ONH6sIA9vLZ_WLcCIhfBBXwtG';
 
-        const body = new TonWeb.boc.Cell();
-        body.bits.writeBytes(rootSignature);
-        body.writeCell(cell);
+            const orderHeader = TonWeb.Contract.createInternalMessageHeader(new TonWeb.utils.Address(destAddress), TonWeb.utils.toNano('0.123'));
+            const msgToBridge = TonWeb.Contract.createCommonMsgInfo(orderHeader, undefined, undefined);
 
-        const header = TonWeb.Contract.createExternalMessageHeader(tonMultisigAddress);
-        const resultMessage = TonWeb.Contract.createCommonMsgInfo(header, null, body);
-        const boc = TonWeb.utils.bytesToBase64(await resultMessage.toBoc(false));
+            const cell = new TonWeb.boc.Cell();
+            cell.bits.writeUint(new TonWeb.utils.BN(tonMultisigIndex), 8);
+            cell.bits.writeBit(0); // null signatures dict
+            cell.bits.writeUint(new TonWeb.utils.BN(WALLET_ID), 32);
+            cell.bits.writeUint(queryId, 64);
+            cell.bits.writeUint(new TonWeb.utils.BN(3), 8); // send mode 3
+            cell.refs.push(msgToBridge);
 
-        console.log(boc);
+            const rootHash = await cell.hash();
+            const rootSignature = TonWeb.utils.nacl.sign.detached(rootHash, secretKey);
 
-        const tonweb = new TonWeb();
-        console.log(await tonweb.provider.sendBoc(boc));
+            const body = new TonWeb.boc.Cell();
+            body.bits.writeBytes(rootSignature);
+            body.writeCell(cell);
+            return sendInternal(body, tonMultisigAddress);
+        }
 
+        await sendToMultisig();
     } else {
         console.error('No file ' + FILE_NAME);
     }
