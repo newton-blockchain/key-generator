@@ -66,7 +66,7 @@ async function init() {
         const sendToMultisig = async () => {
             const tonMultisigAddress = 'Ef_8C2w4oNoiU2zpyxQDSJhZOphjV9QdjfDm2S-AShIfDCHK';
             const WALLET_ID = 101;
-            const queryId = new BN(1680123600).mul(new BN(4294967296)).add(new BN(11)); // 30 mar 2023
+            const queryId = new BN(1680123600).mul(new BN(4294967296)).add(new BN(12)); // 30 mar 2023
             const destAddress = 'EQA0i8-CdGnF_DhUHHf92R1ONH6sIA9vLZ_WLcCIhfBBXwtG';
 
             const orderHeader = TonWeb.Contract.createInternalMessageHeader(new TonWeb.utils.Address(destAddress), TonWeb.utils.toNano('0.123'));
