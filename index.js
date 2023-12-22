@@ -57,7 +57,7 @@ async function init() {
     };
 
     if (needSave) {
-        fs.writeFile(FILE_NAME, JSON.stringify(data), (err, data) => {
+        fs.writeFile(FILE_NAME, JSON.stringify(data, null, 2), (err, data) => {
             if (err) {
                 return console.error('Write file error', err);
             }
